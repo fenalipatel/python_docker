@@ -2,19 +2,6 @@ import docker
 import pymysql
 import pandas as pd
 
-
-# Connect to Docker container
-client = docker.from_env()
-container = client.containers.get('my-mysql')
-container.start()
-
-# Check if container is connected
-if container.status == 'running':
-    print('Docker container connected.')
-else:
-    print('Error: Docker container not connected.')
-
-# Connect to the MySQL server
 try:
     conn = pymysql.connect(
         host="localhost",
@@ -53,6 +40,9 @@ table1_schema = (
     "TF INT)"
 )
 
+# Write the schema definition to a SQL file
+# with open("C:\\Users\\JAY\\OneDrive\\Desktop\\internship\\repo\\python_docker\\Database-intigestion\\mysql-setup\\table1.sql", "w") as f:
+#     f.write(table1)
 
 # Drop table1 if it already exists
 try:
@@ -74,6 +64,9 @@ try:
 except pd.errors.EmptyDataError as e:
     print("Error reading CSV file:", e)
     exit()
+
+# Write data to CSV file
+table1_data.to_csv("C:/Users/JAY/OneDrive/Desktop/internship/repo/python_docker/Database-intigestion/populate-db/table1.csv", index=False)
 
 # Insert data into table1
 for i, row in table1_data.iterrows():
